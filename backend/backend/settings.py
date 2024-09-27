@@ -99,9 +99,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'testbase',
-        'USER': 'root',
-        'PASSWORD': 'admin',
-        'HOST':'localhost',
+        'USER': 'admin',
+        'PASSWORD': 'socialMedia1',
+        'HOST':'social-media-db-v1.ctaoamggw23g.us-east-2.rds.amazonaws.com',
         'PORT':'3306',
     }
 }
@@ -142,7 +142,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
