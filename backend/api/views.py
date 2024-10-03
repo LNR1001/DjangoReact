@@ -3,8 +3,10 @@ from django.contrib.auth import get_user
 #from django.contrib.auth.models import User    #"User" references replaced with "CustomUser" custom model
 from .models import *
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import *
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.generics import ListAPIView
+
 #from .models import Note   #Imported above via *
 
 # Create your views here.
@@ -26,8 +28,22 @@ class UserProfileUpdate(generics.RetrieveUpdateAPIView):
     
     def get_object(self):
         return self.request.user
-        
     
+class PostCreate(generics.CreateAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class PostListView(ListAPIView):    #This view is used to return a list of objects. Here, we use it to return all the posts in the Post model.
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]  # Adjust permissions as needed
+        
 class NoteListCreate(generics.ListCreateAPIView):   #Note we are displaying a list, so using 'generics.ListCreateAPIView' instead
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]          #Allows only authenticated to access list
